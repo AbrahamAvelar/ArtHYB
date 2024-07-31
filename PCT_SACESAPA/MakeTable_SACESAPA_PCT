@@ -1,0 +1,84 @@
+### Ahora quiero buscar todos los híbridos, sace y sapa que tengamos ahí:
+## Con Q30:
+strains2=$(find /mnt/Timina/lmorales/Public/ymez/stats/coverage/ -type d -name "CONC" | awk -F'/' '{print $(NF-1)}')
+counter=1
+echo "ID,SACE_Above10x,SAPA_Above10x,TotalReads,SACE_ReadsPerTotal_Reads,SAPA_ReadsPERTotal_Reads" > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30.csv
+echo "ID,SACE_Above10x,SAPA_Above10x,TotalReads,SACE_ReadsPerTotal_Reads,SAPA_ReadsPERTotal_Reads" > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30_notFound.csv
+
+while read -r ThisStrain; do
+    file_path="/mnt/Timina/lmorales/Public/ymez/stats/coverage/$ThisStrain/CONC/Q30/${ThisStrain}_CONC_Q30_perReference.csv"
+    if [[ -f "$file_path" ]]; then
+        col9line2=$(sed -n '2p' "$file_path" | cut -d"," -f9)
+        col9line3=$(sed -n '3p' "$file_path" | cut -d"," -f9)
+        second_col_line2=$(sed -n '2p' "$file_path" | cut -d"," -f2)
+        second_col_line3=$(sed -n '3p' "$file_path" | cut -d"," -f2)
+        TotalReads=$(awk -F"," 'NR > 1 {sum += $2} END {print sum}' "$file_path")
+        Ratio=$(awk "BEGIN {print $second_col_line2 / $TotalReads}")
+        Ratio2=$(awk "BEGIN {print $second_col_line3 / $TotalReads}")
+
+        if (( $(echo "$Ratio + $Ratio2 < 0.9" | bc -l) )); then
+            Classification="WEIRD"
+        elif (( $(echo "$Ratio > 0.1" | bc -l) )) && (( $(echo "$Ratio2 > 0.1" | bc -l) )); then
+            Classification="HYB"
+        elif (( $(echo "$Ratio > 0.1" | bc -l) )); then
+            Classification="SACE"
+        elif (( $(echo "$Ratio2 > 0.1" | bc -l) )); then
+            Classification="SAPA"
+        else
+            Classification="Unknown"
+        fi
+
+        echo "Iteration $counter: $ThisStrain,$col9line2,$col9line3,$TotalReads,$Ratio,$Ratio2,$Classification"
+        echo "$ThisStrain,$col9line2,$col9line3,$TotalReads,$Ratio,$Ratio2,$Classification" >> /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30.csv
+        counter=$((counter + 1))
+    else
+        echo "File not found for $file_path"
+        echo "File not found for $file_path"  >> /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30_notFound.csv
+
+    fi
+done <<< "$strains2"
+
+sed 's/"//g' /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30.csv > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q30_no_quotes.csv
+
+
+
+## Con Q20:
+strains2=$(find /mnt/Timina/lmorales/Public/ymez/stats/coverage/ -type d -name "CONC" | awk -F'/' '{print $(NF-1)}')
+counter=1
+echo "ID,SACE_Above10x,SAPA_Above10x,TotalReads,SACE_ReadsPerTotal_Reads,SAPA_ReadsPERTotal_Reads" > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20.csv
+echo "ID,SACE_Above10x,SAPA_Above10x,TotalReads,SACE_ReadsPerTotal_Reads,SAPA_ReadsPERTotal_Reads" > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20_notFound.csv
+
+while read -r ThisStrain; do
+    file_path="/mnt/Timina/lmorales/Public/ymez/stats/coverage/$ThisStrain/CONC/Q20/${ThisStrain}_CONC_Q20_perReference.csv"
+    if [[ -f "$file_path" ]]; then
+        col9line2=$(sed -n '2p' "$file_path" | cut -d"," -f9)
+        col9line3=$(sed -n '3p' "$file_path" | cut -d"," -f9)
+        second_col_line2=$(sed -n '2p' "$file_path" | cut -d"," -f2)
+        second_col_line3=$(sed -n '3p' "$file_path" | cut -d"," -f2)
+        TotalReads=$(awk -F"," 'NR > 1 {sum += $2} END {print sum}' "$file_path")
+        Ratio=$(awk "BEGIN {print $second_col_line2 / $TotalReads}")
+        Ratio2=$(awk "BEGIN {print $second_col_line3 / $TotalReads}")
+
+        if (( $(echo "$Ratio + $Ratio2 < 0.9" | bc -l) )); then
+            Classification="WEIRD"
+        elif (( $(echo "$Ratio > 0.1" | bc -l) )) && (( $(echo "$Ratio2 > 0.1" | bc -l) )); then
+            Classification="HYB"
+        elif (( $(echo "$Ratio > 0.1" | bc -l) )); then
+            Classification="SACE"
+        elif (( $(echo "$Ratio2 > 0.1" | bc -l) )); then
+            Classification="SAPA"
+        else
+            Classification="Unknown"
+        fi
+
+        echo "Iteration $counter: $ThisStrain,$col9line2,$col9line3,$TotalReads,$Ratio,$Ratio2,$Classification"
+        echo "$ThisStrain,$col9line2,$col9line3,$TotalReads,$Ratio,$Ratio2,$Classification" >> /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20.csv
+        counter=$((counter + 1))
+    else
+        echo "File not found for $file_path"
+        echo "File not found for $file_path"  >> /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20_notFound.csv
+
+    fi
+done <<< "$strains2"
+
+sed 's/"//g' /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20.csv > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20_no_quotes.csv
