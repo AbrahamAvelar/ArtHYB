@@ -4,6 +4,9 @@ nucmer --prefix=SC_SP  /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/f
 delta-filter -r -q SC_SP.delta > filtered_SCSP.delta
 show-coords -rcl filtered_SCSP.delta > alignments.coords
 
+nucmer --prefix=sac_par_synteny -c 40 -l 15 -b 500 S_cerevisiae.fasta S_paradoxus.fasta # esta no la corrí
+# -c cluster length (default 65) # -l match length (default 20)   # -b break length to allow size of the gaps (default 200)
+
 
 delta-filter -i 70 -l 500 filtered_SCSP.delta > filtered_SCSP_2.delta # i minimum identity. -l minimum length of alignments
 show-coords -rcl filtered_SCSP_2.delta > sac_par_synteny.coords
