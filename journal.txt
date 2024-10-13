@@ -7,9 +7,33 @@ show-coords -rcl filtered_SCSP.delta > alignments.coords
 nucmer --prefix=sac_par_synteny -c 40 -l 15 -b 500 S_cerevisiae.fasta S_paradoxus.fasta # esta no la corrí
 # -c cluster length (default 65) # -l match length (default 20)   # -b break length to allow size of the gaps (default 200)
 
-
 delta-filter -i 70 -l 500 filtered_SCSP.delta > filtered_SCSP_2.delta # i minimum identity. -l minimum length of alignments
 show-coords -rcl filtered_SCSP_2.delta > sac_par_synteny.coords
 
+/mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/
 
-  
+cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/*.tbi   /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/
+
+
+ sed 's/ /,/g' sac_par_synteny.coords| sed 's/|//g' |sed 's/,,,,/,/g'|sed 's/,,,/,/g'|sed 's/,,/,/g'|sed 's/\t/,/g' | head > sc_sp_coords.txt
+
+
+bash coords2chain.sh sac_par_synteny.coords output.chain  
+
+module load liftover/liftover
+cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX004655_CONC.SNP_onlychr_SAPA.g.vcf
+/mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX004655_CONC.SNP_onlychr_SACE.g.vcf
+
+tabix -p vcf S_paradoxus.vcf.gz
+
+
+liftOver YMX004655_CONC.SNP_onlychr_SAPA.g.vcf.gz.tbi output.chain S_par_convertedToScer.vcf unMapped.vcf
+
+###################
+
+cd /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP
+module load samtools/1.9
+bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sp_cords.tsv output__sp.depth
+bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sc_cords.tsv output__sc.depth
+
+bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/hybrids79.csv
