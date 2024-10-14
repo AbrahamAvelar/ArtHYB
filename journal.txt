@@ -34,7 +34,41 @@ module load samtools/1.9
 bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sp_cords.tsv output__sp.depth
 bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sc_cords.tsv output__sc.depth
 
+module load samtools/1.9
 bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/hybrids79.csv
 
 
 cd /mnt/Timina/lmorales/Public/ymez/data/bam/
+
+
+
+
+####
+# 0 download
+# 00_Download
+vim /mnt/Timina/lmorales/Public/ymez/data/metadata/missingHybrids.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/00_download
+python3.7 download_sra.py -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingHybrids.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/00_download
+mv javelar_SH_download_SRA.sh javelar_SH_download_SRA_MissingHybrids.sh
+bash javelar_SH_download_SRA_MissingHybrids.sh
+
+
+
+# 02_Cleaning
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/02_cleaning
+module load python37/3.7.0
+python3.7 clean_fastq.py -s  /mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SACE192_NewXA/NewSACE_XA/SACE8_Faltantes_toDownload_XA.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/02_cleaning
+bash  javelar_SH_clean_fastq.sh
+
+# 03_Mapping 
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/03_mapping
+module load python37/3.7.0
+python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SACE.txt -s /mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SACE192_NewXA/NewSACE_XA/SACE8_Faltantes_toDownload_XA.csv
+exit
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/03_mapping
+mv javelar_SH_map2ref.sh javelar_SH_map2ref_MissXA.sh
+bash javelar_SH_map2ref_MissXA.sh
+
