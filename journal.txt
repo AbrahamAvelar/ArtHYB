@@ -12,9 +12,7 @@ show-coords -rcl filtered_SCSP_2.delta > sac_par_synteny.coords
 
 /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/
 
-cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/*.tbi   /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/
-
-
+cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/*.tbi   x|
  sed 's/ /,/g' sac_par_synteny.coords| sed 's/|//g' |sed 's/,,,,/,/g'|sed 's/,,,/,/g'|sed 's/,,/,/g'|sed 's/\t/,/g' | head > sc_sp_coords.txt
 
 
@@ -37,3 +35,6 @@ bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sp_cords.tsv output_
 bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sc_cords.tsv output__sc.depth
 
 bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/hybrids79.csv
+
+
+cd /mnt/Timina/lmorales/Public/ymez/data/bam/
