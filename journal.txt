@@ -1,4 +1,3 @@
-
 mummer4/4.0 
 nucmer --prefix=SC_SP  /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/fasta/SACE_S288C_v1_allChr.fasta   /mnt/Timina/lmorales/Public/ymez/data/ref/SAPA_YPS138_v1/fasta/SAPA_YPS138_v1_allChr.fasta 
 delta-filter -r -q SC_SP.delta > filtered_SCSP.delta
@@ -25,8 +24,6 @@ cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX004655_CONC.SNP_onlychr_S
 tabix -p vcf S_paradoxus.vcf.gz
 
 
-liftOver YMX004655_CONC.SNP_onlychr_SAPA.g.vcf.gz.tbi output.chain S_par_convertedToScer.vcf unMapped.vcf
-
 ###################
 
 cd /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP
@@ -37,13 +34,15 @@ bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sc_cords.tsv output_
 module load samtools/1.9
 bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/hybrids79.csv
 
-
-cd /mnt/Timina/lmorales/Public/ymez/data/bam/
-
-
+/mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/sp_cords.tsv
+ls -alth /mnt/Timina/lmorales/Public/ymez/data/bam/ | head 
 
 
-####
+
+
+
+
+##################
 # 0 download
 # 00_Download
 vim /mnt/Timina/lmorales/Public/ymez/data/metadata/missingHybrids.csv
