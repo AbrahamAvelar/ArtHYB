@@ -1,0 +1,34 @@
+#!/bin/bash
+
+module load bcftools/1.9
+
+# Argumentos: regiones, VCF, archivo de salida, y nombre de muestra
+REGIONS_FILE=$1
+VCF_FILE=$2
+OUTPUT_FILE=$3
+SAMPLE_NAME=$4
+
+last_chrom=""  # Variable para almacenar el último cromosoma procesado
+echo -e "Region\tChromosome\tStart\tEnd\tTotal_Sites\tHeterozygous_Sites\tHeterozygosity" > "$OUTPUT_FILE" # Crear output con columnas
+
+cut -f1 "$REGIONS_FILE" | while IFS= read -r region; do
+    chrom=$(echo "$region" | cut -d':' -f1) # Extraer el cromosoma
+    start=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f1) # Extraer posición inicial
+    end=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f2) # Extraer posición final
+
+    if [[ "$chrom" != "$last_chrom" ]]; then echo "Processing chromosome: $chrom"; last_chrom="$chrom"; fi # Imprimir cambio de cromosoma
+
+    temp_file="${SAMPLE_NAME}_genotypes.tmp" # Archivo temporal con prefijo de muestra
+    bcftools view -r "$chrom:$start-$end" "$VCF_FILE" -Ou | bcftools query -f '[%CHROM\t%POS\t%GT\n]' > "$temp_file" # Extraer variantes
+
+    total_sites=$(wc -l < "$temp_file") # Contar variantes
+    het_sites=$(awk '$3 == "0/1" || $3 == "1/0" {count++} END {print count}' "$temp_file") # Contar sitios heterocigotos
+    if [[ -z "$het_sites" ]]; then het_sites=0; continue; fi # Si no hay sitios heterocigotos, continuar
+
+    if [ "$total_sites" -gt 0 ]; then heterozygosity=$(awk "BEGIN {print $het_sites / $total_sites}"); else continue; fi # Calcular heterocigosidad
+
+    echo -e "$region\t$chrom\t$start\t$end\t$total_sites\t$het_sites\t$heterozygosity" >> "$OUTPUT_FILE" # Guardar resultados
+    rm "$temp_file" # Limpiar archivo temporal
+done
+
+echo "Cálculo completado. Resultados guardados en $OUTPUT_FILE."
