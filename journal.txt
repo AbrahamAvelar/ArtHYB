@@ -43,28 +43,27 @@ ls -alth /mnt/Timina/lmorales/Public/ymez/data/bam/ | head
 
 module load bcftools
 # Definir los archivos de entrada y salida
+REGIONS_FILE_sp="/mnt/Timina/lmorales/Public/ymez/data/bam/XA191c2_output_sp_500ntWindow.depth"
+VCF_FILE_sp="/mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/XA191c2_CONC.SNP_onlychr_SAPA.g.vcf.gz"
+OUTPUT_FILE_sp="XA191c2_heterozygosity_per_region.txt"
+
 REGIONS_FILE="/mnt/Timina/lmorales/Public/ymez/data/bam/YMX005560_output_sp_500ntWindow.depth"
 VCF_FILE="/mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX005560_CONC.SNP_onlychr_SAPA.g.vcf"
 OUTPUT_FILE="YMX005560_heterozygosity_per_region.txt"
 
 # Crear el archivo de salida con encabezado
 echo -e "Region\tChromosome\tStart\tEnd\tTotal_Sites\tHeterozygous_Sites\tHeterozygosity" > "$OUTPUT_FILE"
-
-
 cut -f1 "$REGIONS_FILE" | while IFS= read -r region; do
     # Extraer el cromosoma y las coordenadas
     chrom=$(echo "$region" | cut -d':' -f1)
     start=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f1)
     end=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f2)
-
     # Extraer variantes dentro de la región
     bcftools view -r "$chrom:$start-$end" "$VCF_FILE" -Ou | \
     bcftools query -f '[%CHROM\t%POS\t%GT\n]' > genotypes.tmp
-
     # Contar genotipos heterocigotos (0/1 o 1/0) y total de variantes
     total_sites=$(wc -l < genotypes.tmp)
     het_sites=$(awk '$3 == "0/1" || $3 == "1/0" {count++} END {print count}' genotypes.tmp)
-
     # Calcular heterocigosidad (het_sites / total_sites)
     if [ "$total_sites" -gt 0 ]; then
         heterozygosity=$(awk "BEGIN {print $het_sites / $total_sites}")
@@ -79,10 +78,34 @@ cut -f1 "$REGIONS_FILE" | while IFS= read -r region; do
     rm genotypes.tmp
 
 done
-
-
-
 echo "Cálculo completado. Resultados guardados en $OUTPUT_FILE."
+
+echo -e "Region\tChromosome\tStart\tEnd\tTotal_Sites\tHeterozygous_Sites\tHeterozygosity" > "$OUTPUT_FILE_sp"
+cut -f1 "$REGIONS_FILE_sp" | while IFS= read -r region; do
+    # Extraer el cromosoma y las coordenadas
+    chrom=$(echo "$region" | cut -d':' -f1)
+    start=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f1)
+    end=$(echo "$region" | cut -d':' -f2 | cut -d'-' -f2)
+    # Extraer variantes dentro de la región
+    bcftools view -r "$chrom:$start-$end" "$VCF_FILE_sp" -Ou | \
+    bcftools query -f '[%CHROM\t%POS\t%GT\n]' > genotypes.tmp
+    # Contar genotipos heterocigotos (0/1 o 1/0) y total de variantes
+    total_sites=$(wc -l < genotypes.tmp)
+    het_sites=$(awk '$3 == "0/1" || $3 == "1/0" {count++} END {print count}' genotypes.tmp)
+    # Calcular heterocigosidad (het_sites / total_sites)
+    if [ "$total_sites" -gt 0 ]; then
+        heterozygosity=$(awk "BEGIN {print $het_sites / $total_sites}")
+    else
+        heterozygosity=0
+    fi
+    # Guardar los resultados
+    echo -e "$region\t$chrom\t$start\t$end\t$total_sites\t$het_sites\t$heterozygosity" >> "$OUTPUT_FILE_sp"
+    # Limpiar archivo temporal
+    rm genotypes.tmp
+done
+
+echo "Cálculo completado. Resultados guardados en $OUTPUT_FILE_sp."
+
 
 
 bash windowed_heterozygosity.sh
