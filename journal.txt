@@ -34,10 +34,19 @@ bash extractCoverFromBed.sh YMX004655_CONC.rmdup.addgp.bam  sc_cords.tsv output_
 module load samtools/1.9
 bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/hybrids79.csv
 
+module load samtools/1.9 #241128
+bash run_extract_samples.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/HybParents.csv #241128
+
+
 /mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP/sp_cords.tsv
 ls -alth /mnt/Timina/lmorales/Public/ymez/data/bam/ | head 
 
+
+
+
 ############# Heterocigosidad en las mismas ventanas
+
+
 
 #!/bin/bash
 
