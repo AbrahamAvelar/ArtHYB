@@ -21,8 +21,8 @@ while IFS= read -r sample; do
     echo "Processing sample: $sample"
 
     # Llamar al script windowed_heterozygosity.sh para ambas combinaciones
-    ./windowed_heterozygosity.sh "$REGIONS_FILE_sp" "$VCF_FILE_sp" "$OUTPUT_FILE_sp" "$sample"
-    ./windowed_heterozygosity.sh "$REGIONS_FILE_sc" "$VCF_FILE_sc" "$OUTPUT_FILE_sc" "$sample"
+    windowed_heterozygosity_2.0.sh "$REGIONS_FILE_sp" "$VCF_FILE_sp" "$OUTPUT_FILE_sp" "$sample"
+    windowed_heterozygosity_2.0.sh "$REGIONS_FILE_sc" "$VCF_FILE_sc" "$OUTPUT_FILE_sc" "$sample"
 done < "$SAMPLES_CSV"
 
 echo "Cálculo de heterocigosidad completado para todas las muestras."
