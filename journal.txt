@@ -22,6 +22,20 @@ cp /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX004655_CONC.SNP_onlychr_S
 /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/YMX004655_CONC.SNP_onlychr_SACE.g.vcf
 
 tabix -p vcf S_paradoxus.vcf.gz
+----241212
+#esto es de ES
+nucmer --mum --prefix=DBVPG6765xYPS138_chr1 /mnt/Timina/lmorales/Public/ymez/esantiago/ParentalGenomesAlignment/data/DBVPG6765/SACE_DBVPG6765_Chr1.fa /mnt/Timina/lmorales/Public/ymez/esantiago/ParentalGenomesAlignment/data/YPS138/SAPA_YPS138_Chr1.fa
+show-snps -CrT DBVPG6765xYPS138_chr1.delta > /mnt/Timina/lmorales/Public/ymez/esantiago/ParentalGenomesAlignment/data/alignments/DBVPG6765xYPS138_chr1.snps
+
+nucmer --mum --prefix=S288CxYPS138_chr1 /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/fasta/OnebyOne/SACE_S288C_v1_chr_01.fasta /mnt/Timina/lmorales/Public/ymez/esantiago/ParentalGenomesAlignment/data/YPS138/SAPA_YPS138_Chr1.fa
+show-snps -HCrT S288CxYPS138_chr1.delta > /mnt/Timina/lmorales/Public/ymez/esantiago/ParentalGenomesAlignment/data/alignments/S288CxYPS138_chr1.snps
+
+#Ya adaptado:
+show-snps -CrT  SC_SP.delta > SC_SP.snps
+
+nucmer --mum --prefix=SC_SP_mum  /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/fasta/SACE_S288C_v1_allChr.fasta   /mnt/Timina/lmorales/Public/ymez/data/ref/SAPA_YPS138_v1/fasta/SAPA_YPS138_v1_allChr.fasta 
+show-snps -HCrT SC_SP_mum.delta >  SC_SP_mum.snps
+
 
 
 ###################
