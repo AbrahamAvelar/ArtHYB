@@ -153,4 +153,79 @@ echo "Cálculo completado. Resultados guardados en $OUTPUT_FILE_sp."
 bash windowed_heterozygosity.sh
 run_windowed_het.sh /mnt/Timina/lmorales/Public/ymez/data/metadata/HybParents.csv
 
+####################### 250107 #########################
+Ahora quiero tener la coverage depth as well as the heterozygosity through both genomes.
+-record number of reads in favor of each nucleotide
+-compare Spb vs LoH sequence. are we sure they are SpBMx?
+
+Para tener una lista con ambos, necesito t
+
+/mnt/Timina/lmorales/javelar/Mummer_Jan2025
+/mnt/Timina/lmorales/Public/ymez/data/ref/Mummer_SCSP
+
+#Ya adaptado # de la línea 33
+show-snps -CrT  SC_SP.delta > SC_SP.snps
+nucmer --mum --prefix=SC_SP_mum  /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/fasta/SACE_S288C_v1_allChr.fasta   /mnt/Timina/lmorales/Public/ymez/data/ref/SAPA_YPS138_v1/fasta/SAPA_YPS138_v1_allChr.fasta 
+show-snps -HCrT SC_SP_mum.delta >  SC_SP_mum.snps #Aquí están todas las posiciones homólogas de la referencias que tienen algún SNP
+
+
+#Ahora hay que agregar todas las posiciones que sean heterocigotas en alguna SC o alguna SP, para eso hay que sacarlas de los VCFs múltiples o bien de los VCFs individuales de cada OnlyChr SACE o SAPA.
+VCF_FILE_sp="/mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/XA191c2_CONC.SNP_onlychr_SAPA.g.vcf.gz"
+VCF_FILE="/mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/XA191c2_CONC.SNP_onlychr_SACE.g.vcf.gz"
+
+
+A reference genome in FASTA format (genome.fasta).
+A VCF file with variant positions (variants.vcf).
+
+bcftools consensus -f /mnt/Timina/lmorales/Public/ymez/data/ref/SACE_S288C_v1/fasta/SACE_S288C_v1_allChr.fasta  -o alt_genome.fasta variants.vcf
+
+# Filter for Positions with Alternative Alleles (ALT ≠ .): Use bcftools to retain only records where ALT has a valid value:
+module load bcftools/1.9
+bcftools view -v snps -Oz -o snps_only.vcf.gz /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/XA191c2_CONC.SNP_onlychr_SACE.g.vcf.gz
+bcftools index snps_only.vcf.gz
+bcftools stats snps_only.vcf.gz | less
+bcftools view -v snps -Oz -o snps_only.vcf.gz /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/XA191c2_CONC.SNP_onlychr_SACE.g.vcf.gz
+
+
+se me hace que la mejor forma es hacer el multivcf de los onlyChrs por separado.
+
+# 06_genotyping HACER MULTIVCF
+cd  /mnt/Timina/lmorales/Public/ymez/bin/scripts/06_genotyping
+module load python37/3.7.0
+python3.7 genotyping_and_filtering.py   -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc720.csv -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -m .01
+
+Warning: from CONC missing 133 vcf files for SACE. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log
+Warning: from CONC missing 228 vcf files for SAPA. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log
+
+
+bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv
+bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSAPAfromSacc720.csv
+
+
+
+# 05_vcalling
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/05_vcalling
+module load python37/3.7.0
+python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
+mv  javelar_SH_vcalling_genotyping.sh javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
+bash javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
+
+
+
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv --subgenome SACE
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
+bash javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
+
+exit
+
+
+
+cd  /mnt/Timina/lmorales/Public/ymez/bin/SGE/06_genotyping/
+mv javelar_SH_getSNPmatrix.sh javelar_SH_getSNPmatrix_SACE466.sh  
+mv get_SACE_SNPmatrix_from_CONC.sge  get_SACE_SNPmatrix_from_CONC_SACE466.sge #SinTequila, sin SAM2 con MissingAlpechin
+vim javelar_SH_getSNPmatrix_SACE466.sh   # cambié el nombre del sge que va a mandar correr TAMBIÉN LA CARPETA OUTPUT!
+vim  get_SACE_SNPmatrix_from_CONC_SACE466.sge # cambie output de .err y .out
+bash javelar_SH_getSNPmatrix_SACE466.sh # Output en: /mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SACE466
 
