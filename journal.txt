@@ -212,13 +212,19 @@ cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
 mv  javelar_SH_vcalling_genotyping.sh javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
 bash javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
 #---aquí va---#
+#en LM
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/05_vcalling
+module load python37/3.7.0
+python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSAPAfromSacc720.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
+mv lmorales_SH_vcalling_genotyping.sh lmorales_SH_vcalling_genotyping_missingSAPAfromSacc720.sh
+bash lmorales_SH_vcalling_genotyping_missingSAPAfromSacc720.sh
 
 
 python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv --subgenome SACE
 mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
 bash javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
 
-exit
 
 
 
