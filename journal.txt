@@ -211,7 +211,7 @@ python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ym
 cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
 mv  javelar_SH_vcalling_genotyping.sh javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
 bash javelar_SH_vcalling_genotyping_missingSACEfromSacc720.sh
-
+#---aquí va---#
 
 
 python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv --subgenome SACE
