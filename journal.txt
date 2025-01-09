@@ -227,6 +227,9 @@ python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_
 mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingOnly_SACEfromSacc720.sh
 bash javelar_SH_vcfOnlychr_missingOnly_SACEfromSacc720.sh
 
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSAPAfromSacc720.csv --subgenome SAPA
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
+bash javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
 
 
 
