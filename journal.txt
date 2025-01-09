@@ -193,6 +193,7 @@ se me hace que la mejor forma es hacer el multivcf de los onlyChrs por separado.
 cd  /mnt/Timina/lmorales/Public/ymez/bin/scripts/06_genotyping
 module load python37/3.7.0
 python3.7 genotyping_and_filtering.py   -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc720.csv -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -m .01
+cd  /mnt/Timina/lmorales/Public/ymez/sge/scripts/06_genotyping
 
 Warning: from CONC missing 133 vcf files for SACE. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log
 Warning: from CONC missing 228 vcf files for SAPA. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log
@@ -201,6 +202,7 @@ Warning: from CONC missing 228 vcf files for SAPA. A list of missing files can b
 bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv
 bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSAPAfromSacc720.csv
 
+bash makeSampleSheetFromMissingPaths.sh  /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_3dc.log /mnt/Timina/lmorales/Public/ymez/data/metadata/missingOnly_SACEfromSacc720.csv
 
 
 # 05_vcalling
@@ -221,9 +223,9 @@ mv lmorales_SH_vcalling_genotyping.sh lmorales_SH_vcalling_genotyping_missingSAP
 bash lmorales_SH_vcalling_genotyping_missingSAPAfromSacc720.sh
 
 
-python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv --subgenome SACE
-mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
-bash javelar_SH_vcfOnlychr_missingSACEfromSacc720.sh
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/missingOnly_SACEfromSacc720.csv --subgenome SACE
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingOnly_SACEfromSacc720.sh
+bash javelar_SH_vcfOnlychr_missingOnly_SACEfromSacc720.sh
 
 
 
