@@ -232,6 +232,14 @@ mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
 bash javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
 
 
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc720.csv --subgenome SACE
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_Sacc720.sh
+bash javelar_SH_vcfOnlychr_Sacc720.sh
+
+
+
+
+
 
 cd  /mnt/Timina/lmorales/Public/ymez/bin/SGE/06_genotyping/
 mv javelar_SH_getSNPmatrix.sh javelar_SH_getSNPmatrix_SACE466.sh  
