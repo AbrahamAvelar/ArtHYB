@@ -198,12 +198,9 @@ cd  /mnt/Timina/lmorales/Public/ymez/sge/scripts/06_genotyping
 Warning: from CONC missing 133 vcf files for SACE. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log
 Warning: from CONC missing 228 vcf files for SAPA. A list of missing files can be found at /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log
 
-
 bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_5eb.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSACEfromSacc720.csv
 bash makeSampleSheetFromMissingPaths.sh /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SAPA_from_CONC_dbd.log  /mnt/Timina/lmorales/Public/ymez/data/metadata/missingSAPAfromSacc720.csv
-
 bash makeSampleSheetFromMissingPaths.sh  /mnt/Timina/lmorales/Public/ymez/tmp/05_vcalling/missingVcfs_SACE_from_CONC_3dc.log /mnt/Timina/lmorales/Public/ymez/data/metadata/missingOnly_SACEfromSacc720.csv
-
 
 # 05_vcalling
 qlogin
@@ -231,12 +228,13 @@ python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_
 mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
 bash javelar_SH_vcfOnlychr_missingOnly_SAPAfromSacc720.sh
 
-
 python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc720.csv --subgenome SACE
-mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_Sacc720.sh
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc720.csv --subgenome SAPA
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_Sacc720_SACE.sh
+mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_Sacc720_SAPA.sh
 bash javelar_SH_vcfOnlychr_Sacc720.sh
 
-
+#otra vez de 192 a 196
 
 
 
