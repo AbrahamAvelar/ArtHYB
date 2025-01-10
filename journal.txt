@@ -235,9 +235,10 @@ mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_Sacc720_SAPA.sh
 bash javelar_SH_vcfOnlychr_Sacc720.sh
 
 #otra vez de 192 a 196
-
-
-
+javelar_SH_getSNPmatrix_sacc720.sh
+get_SAPA_SNPmatrix_from_CONC_sacc720.sge
+get_SACE_SNPmatrix_from_CONC_sacc720.sge
+bash javelar_SH_getSNPmatrix_sacc720.sh
 
 cd  /mnt/Timina/lmorales/Public/ymez/bin/SGE/06_genotyping/
 mv javelar_SH_getSNPmatrix.sh javelar_SH_getSNPmatrix_SACE466.sh  
