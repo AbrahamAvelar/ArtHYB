@@ -417,8 +417,8 @@ make_pie <- function(data_long, facet_col = NULL, title_text = "") {
   base <- ggplot(plot_data, aes(x = "", y = Count, fill = Species)) +
     geom_col(width = 1, color = "white") +
     coord_polar(theta = "y") +
-    geom_text(aes(label = ifelse(Count > 0, label, "")),
-              position = position_stack(vjust = 0.5), size = 3) +
+    geom_text(aes(label = ifelse(Count > 0, label, "")), ## Comentar o quitar comentario de esta linea para poner o quitar los textos de los pays
+              position = position_stack(vjust = 0.5), size = 3) +## Comentar o quitar comentario de esta linea para poner o quitar los textos de los pays
     labs(x = NULL, y = NULL, title = title_text, fill = "Species") +
     theme_minimal(base_size = 12) +
     theme(
