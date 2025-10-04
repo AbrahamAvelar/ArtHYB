@@ -66,7 +66,7 @@ cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/03_mapping
 module load python37/3.7.0
 python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
 cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/03_mapping
-bash javelar_SH_map2ref_MissAlp.sh
+bash /javelar_SH_map2ref_EcuadorCONC.sh
 
 qlogin
 cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/03_mapping
