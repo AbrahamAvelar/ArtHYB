@@ -75,22 +75,16 @@ python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_o
 cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/03_mapping
 bash javelar_SH_map2ref_MissAlp.sh
 
+#04_coverage # 
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/04_coverage
+module load python37/3.7.0
+python3.7 coverage_plot.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SACE.txt -s  /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
+exit
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/04_coverage
+bash javelar_SH_coverage_plot.sh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+python3.7 coverage_plot.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s  /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
 
 
 
@@ -98,18 +92,14 @@ bash javelar_SH_map2ref_MissAlp.sh
 qlogin
 cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/05_vcalling
 module load python37/3.7.0
-python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SACE24_Missing_Alpechin.csv
-exit 
-cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
-mv  xxxx  javelar_SH_vcfOnlychr_SACE24_Missing_Alpechin.sh
-bash javelar_SH_vcfOnlychr_SACE24_Missing_Alpechin.sh
+python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SACE.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
+bash javelar_SH_vcalling_genotyping.sh
 
 # 05_vcalling OnlyChr 17:44-17:55
 qlogin
 cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/05_vcalling
 module load python37/3.7.0
-python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SACE24_Missing_Alpechin.csv --subgenome SACE
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SACE.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv --subgenome SACE
 exit
 cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/05_vcalling
-mv javelar_SH_vcfOnlychr.sh javelar_SH_vcfOnlychr_SACE24_Missing_Alpechin.sh
 bash javelar_SH_vcfOnlychr_SACE37_AddEcuadorAndNAOak.sh
