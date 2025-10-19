@@ -114,6 +114,23 @@ mv get_SACE_SNPmatrix_from_SACE.sge get_SACE_SNPmatrix_from_SACE_Sace513.sge
 cd
 cd  /mnt/Timina/lmorales/Public/ymez/bin/SGE/06_genotyping/
 
-# 05_vcallING CONC
+module load python37/3.7.0
+python3.7 vcf2phylip_v28.py  -i /mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SACE513/Matrix_SNPs_SACE_from_SACE_gt_onlySNPs_filtered_missing_10_biallelic --output-folder /mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SACE513/
 
+SRR31911295_CONC.sge
+SRR31911297_CONC.sge
+SRR31911299_CONC.sge
+SRR31911301_CONC.sge
+SRR31911293_CONC.sge
+
+
+
+# 05_vcallING CONC
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/05_vcalling
+module load python37/3.7.0
+python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
+bash
+module load python37/3.7.0
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv --subgenome SACE
 
