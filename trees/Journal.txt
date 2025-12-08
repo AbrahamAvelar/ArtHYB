@@ -134,3 +134,17 @@ bash
 module load python37/3.7.0
 python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv --subgenome SACE
 
+
+##############
+En fenix
+
+run_raxml_bootstrap_param.sh
+
+RaXML_Phylogenetic_Trees_SACE513_toSACE_3.slurm
+cat RAXML_boot_*/RAxML_bootstrap.boots_run* > all_bootstraps.tre
+
+
+run_raxml_ml.slurm
+
+
+
