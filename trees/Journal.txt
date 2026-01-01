@@ -146,5 +146,19 @@ cat RAXML_boot_*/RAxML_bootstrap.boots_run* > all_bootstraps.tre
 
 run_raxml_ml.slurm
 
+qsub RAxML_Phylogenetic_Trees.slurm
+##############
+python3.7 genotyping_and_filtering.py   -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA138.csv  -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -m .1
 
+Reference SAPA_YPS138 was discarded because not all vcf files were found for the samples listed in the sampleSheet
+ID,Lib_Type,SRA
+YMX508A07,,
+YMX508A05,,
+YMX508A06,,
+YMX508A08,,
+YMX508B11,,
+ERR1610944,,
 
+/mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
+
+python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
