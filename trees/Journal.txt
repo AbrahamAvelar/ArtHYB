@@ -148,6 +148,8 @@ run_raxml_ml.slurm
 
 qsub RAxML_Phylogenetic_Trees.slurm
 ##############
+cd  /mnt/Timina/lmorales/Public/ymez/bin/scripts/06_genotyping
+module load python37/3.7.0
 python3.7 genotyping_and_filtering.py   -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA138.csv  -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -m .1
 
 Reference SAPA_YPS138 was discarded because not all vcf files were found for the samples listed in the sampleSheet
@@ -162,3 +164,19 @@ ERR1610944,,
 /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
 
 python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
+
+
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/04_coverage
+module load python37/3.7.0
+python3.7 coverage_plot.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s  /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
+exit
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/04_coverage
+bash javelar_SH_coverage_plot.sh
+
+# 03_Mapping 
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/03_mapping
+module load python37/3.7.0
+python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
+cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/03_mapping
+
