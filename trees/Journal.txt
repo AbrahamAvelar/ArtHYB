@@ -165,6 +165,9 @@ ERR1610944,,
 
 python3.7 vcalling_genotyping_isolates_GATK.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
 
+module load python37/3.7.0
+python3.7 SNPs_onlyChr.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv --subgenome SAPA
+
 
 cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/04_coverage
 module load python37/3.7.0
