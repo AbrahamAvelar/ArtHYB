@@ -183,3 +183,9 @@ module load python37/3.7.0
 python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_SAPA_YPS138.txt -s /mnt/Timina/lmorales/javelar/samplesheets/SAPA6missing.csv
 cd /mnt/Timina/lmorales/Public/ymez/bin/SGE/03_mapping
 
+
+######### 
+
+cd /mnt/data/lmorales/Public/VCFs_fortrees/SAPA138
+rsync -avzh javelar@dna.lavis.unam.mx:/mnt/Timina/lmorales/Public/ymez/tmp/06_genotyping/trees/SAPA138 .
+sbatch RAxML_Phylogenetic_Trees.slurm
