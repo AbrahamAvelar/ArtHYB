@@ -1,0 +1,18 @@
+# 06_genotyping HACER MULTIVCF
+cd  /mnt/Timina/lmorales/Public/ymez/bin/scripts/06_genotyping
+module load python37/3.7.0
+
+python3.7 genotyping_and_filtering.py   -s /mnt/Timina/lmorales/Public/ymez/data/metadata/Sacc723_9_SS.csv -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -m .01
+
+#faltan las de ecuador
+
+SACE5_Ecuador.csv
+
+  /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
+
+# 03_Mapping 
+qlogin
+cd /mnt/Timina/lmorales/Public/ymez/bin/scripts/03_mapping
+module load python37/3.7.0
+python3.7 mapping2ref.py -r /mnt/Timina/lmorales/Public/ymez/data/metadata/ref_only_CONC.txt -s /mnt/Timina/lmorales/Public/ymez/data/metadata/SACE5_Ecuador.csv
+bash javelar_SH_map2ref.sh
