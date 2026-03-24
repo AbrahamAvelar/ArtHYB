@@ -82,3 +82,44 @@ while read -r ThisStrain; do
 done <<< "$strains2"
 
 sed 's/"//g' /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20.csv > /mnt/Timina/lmorales/javelar/PctSACEfromCONC_AllCONC_Q20_no_quotes.csv
+
+
+
+
+########### Ahora por cromosoma ######################
+# Lista de cepas que tienen carpeta CONC (únicas)
+strains2=$(find /mnt/Timina/lmorales/Public/ymez/stats/coverage/ -type d -name "CONC" | awk -F'/' '{print $(NF-1)}' | sort -u)
+
+out="/mnt/Timina/lmorales/javelar/PerContig_SACE_SAPA_Q30_extracted.csv"
+out_nf="/mnt/Timina/lmorales/javelar/PerContig_SACE_SAPA_Q30_notFound.csv"
+
+echo "ID,Subgenome,Chr,Mean,Median,Above_10X" > "$out"
+echo "ID,Status,FilePath" > "$out_nf"
+
+while read -r ThisStrain; do
+  file_path="/mnt/Timina/lmorales/Public/ymez/stats/coverage/$ThisStrain/CONC/Q30/${ThisStrain}_CONC_Q30_perContig.csv"
+  echo "$ThisStrain"
+  if [[ -f "$file_path" ]]; then
+    awk -F',' -v OFS=',' -v id="$ThisStrain" '
+      NR==1 { next }                 # skip header
+      {
+        gsub(/"/, "", $0)            # remove quotes everywhere
+        if ($1 ~ /^SACE_/) sg="SACE";
+        else if ($1 ~ /^SAPA_/) sg="SAPA";
+        else next;
+
+        # Columns: 1=Chr, 2=Mean, 6=Median, 8=Above_10X
+        print id, sg, $1, $2, $6, $8
+      }
+    ' "$file_path" >> "$out"
+  else
+    echo "$ThisStrain,NOT_FOUND,$file_path" >> "$out_nf"
+  fi
+done <<< "$strains2"
+
+
+
+
+
+
+
